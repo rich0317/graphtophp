@@ -9,7 +9,8 @@ pr:
       - '*'
 
 pool:
-  vmImage: 'ubuntu-latest'
+  #vmImage: 'ubuntu-latest'
+  vmImage: RichardTestPool
 
 steps:
   - script: echo Running tests...
