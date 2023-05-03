@@ -1,26 +1,25 @@
-# PHP
-# Test and package your PHP project.
-# Add steps that run tests, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/php
-
 trigger:
-- master
+  branches:
+    include:
+      - master
+
+pr:
+  branches:
+    exclude:
+      - '*'
 
 pool:
-  vmImage: ubuntu-latest
-
-variables:
-  phpVersion: 7.2
+  vmImage: 'ubuntu-latest'
 
 steps:
-- script: |
-    sudo update-alternatives --set php /usr/bin/php$(phpVersion)
-    sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
-    sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
-    sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
-    sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
-    php -version
-  displayName: 'Use PHP version $(phpVersion)'
+  - script: echo Running tests...
+    displayName: 'Run Tests'
 
-- script: composer install --no-interaction --prefer-dist
-  displayName: 'composer install'
+  # 在這裡添加您的測試步驟，例如運行測試腳本或測試框架
+
+  - script: echo Tests passed! Pulling code to AP server...
+    displayName: 'Pull Code to AP Server'
+
+  - script: |
+      ssh richard@192.168.158.133 'cd C:\xampp\htdocs\test && git pull origin master'
+    displayName: 'Execute Pull Command on AP Server'
